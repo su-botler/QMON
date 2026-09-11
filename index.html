@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Connect your phone · Q-MON</title>
+<style>*{box-sizing:border-box}body{margin:0;background:#101115;color:#f1f0f5;font:17px/1.6 system-ui;padding:40px 22px}main{max-width:480px;margin:auto}h1{font-size:30px;line-height:1.2}p,li{color:#c4c3ce}input{width:100%;font:16px ui-monospace,monospace;color:#fff;background:#20212a;border:1px solid #5f5d70;border-radius:8px;padding:14px}button{width:100%;border:0;border-radius:8px;background:#ad91ff;color:#191025;padding:15px;font:600 18px system-ui;margin-top:14px}button:disabled{opacity:.45}label{display:block;margin:24px 0 8px}li{margin-bottom:12px}#status{min-height:3em;color:#d4c4ff}small{color:#aaa9b7}</style></head>
+<body><main><h1>Connect your phone</h1><p>Copy your topic, then add it in the ntfy app.</p>
+<label for="topic">Your Q-MON topic</label><input id="topic" readonly aria-label="Your topic" value="" placeholder="Open this page using your Q-MON QR code">
+<button id="copy" disabled>Copy topic</button><p id="status" role="status">Waiting for a valid setup link.</p>
+<ol><li>Open <strong>ntfy</strong> on your phone.</li><li>Tap <strong>+ / Subscribe</strong> and paste into <strong>Topic name</strong>.</li><li>Use the default server, <strong>https://ntfy.sh</strong>, then tap <strong>Subscribe</strong>.</li><li>Allow notifications. Lock your phone and click <strong>Send phone test</strong> on your computer.</li></ol>
+<small>Keep this topic private. This page does not send notifications or upload your topic. It does not open or subscribe the iPhone app automatically.</small></main>
+<script>
+const topicField=document.getElementById('topic'),copyButton=document.getElementById('copy'),statusText=document.getElementById('status');
+function readTopic(){let topic='';try{topic=decodeURIComponent(location.hash.slice(1));}catch{}const valid=/^[-_A-Za-z0-9]{16,64}$/.test(topic);topicField.value=valid?topic:'';copyButton.disabled=!valid;statusText.textContent=valid?'Ready to copy.':'This link has no valid topic. Scan the setup QR from Q-MON.';}
+readTopic();window.addEventListener('hashchange',readTopic);
+copyButton.onclick=async()=>{try{await navigator.clipboard.writeText(topicField.value);statusText.textContent='Copied. Open ntfy and paste into Topic name.';}catch{topicField.focus();topicField.select();topicField.setSelectionRange(0,topicField.value.length);statusText.textContent='Touch and hold the selected topic, then choose Copy.';}};
+</script></body></html>
